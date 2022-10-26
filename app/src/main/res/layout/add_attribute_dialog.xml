@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_back"
+    android:padding="20dp">
+
+
+    <ImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="5dp"
+        android:src="@drawable/ic_arrow_back" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:padding="5dp"
+        android:text="Add new Attribute"
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/attrTitleIL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/backBtn"
+        android:layout_marginTop="20dp"
+        android:hint="attribute title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/purple_200">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/attrEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/attrValIL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/attrTitleIL"
+        android:layout_marginTop="20dp"
+        android:hint="attribute value"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/purple_200">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/attrValEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add"
+        android:background="@drawable/btn_shape"
+        app:backgroundTint="@null"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_16sdp"
+        android:layout_below="@+id/attrValIL"
+        android:layout_marginTop="@dimen/_20sdp"/>
+</RelativeLayout>

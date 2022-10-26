@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.view.FriendsFragment">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/friend_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/cute_imge"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp"
+                app:layout_column="0"
+                app:layout_row="0" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/nameCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/friend_image"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:layout_column="0"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill"
+                app:layout_row="0"
+                app:layout_rowWeight="1">
+
+                <EditText
+                    android:id="@+id/nameEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/friend_image"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="#fff"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:text="Friend Name"
+                    android:textStyle="bold" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/birthdateCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameCard"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:layout_column="1"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill"
+                app:layout_row="0"
+                app:layout_rowWeight="1">
+
+                <EditText
+                    android:id="@+id/birthDateEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/nameEt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="#fff"
+                    android:text="Birth date"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/favColorCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/birthdateCard"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:layout_column="0"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill"
+                app:layout_row="1"
+                app:layout_rowWeight="1">
+
+                <EditText
+                    android:id="@+id/favColorEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/birthDateEt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:background="#fff"
+                    android:text="Fav Color"
+                    android:enabled="false"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/favColorCard"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/card_item" />
+
+            <Button
+                android:id="@+id/addAttrBtn"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/recyclerview_id"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="@drawable/btn_shape"
+                android:text="add more ..."
+                android:textAllCaps="false"
+                android:textSize="@dimen/_14sdp"
+                app:backgroundTint="@null" />
+
+            <ImageView
+                android:id="@+id/add_imageView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignEnd="@id/friend_image"
+                android:layout_alignBottom="@id/friend_image"
+                app:srcCompat="@drawable/ic_camera" />
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addFriendBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/purple_200"
+        app:tint="@color/white" />
+
+</RelativeLayout>
+
