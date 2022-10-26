@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.lightfeather.friendskeep.databinding.FragmentHomeBinding
+import com.lightfeather.friendskeep.presentation.viewModelModule
 import com.lightfeather.friendskeep.ui.adapter.ViewPagerAdapter
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -33,15 +34,16 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun getFriendsList() {
-      viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-          friendViewModel.getFriendsList.collect{
-              viewPagerAdapter = ViewPagerAdapter(it)
-              binding.viewPager.adapter = viewPagerAdapter
-          }
-      }
-    }
 
+
+    private fun getFriendsList() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            friendViewModel.getFriendsList.collect{
+                viewPagerAdapter = ViewPagerAdapter(it)
+                binding.viewPager.adapter = viewPagerAdapter
+            }
+        }
+    }
     /**
  *     fun loadDummyData(): ArrayList<FriendModel> {
 var getFriendsList = ArrayList<FriendModel>()
