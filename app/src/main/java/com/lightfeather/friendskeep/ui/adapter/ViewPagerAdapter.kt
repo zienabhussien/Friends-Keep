@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.lightfeather.friendskeep.R
-import com.lightfeather.friendskeep.domain.AttributesModel
 import com.lightfeather.friendskeep.domain.FriendModel
 
 class ViewPagerAdapter(private val friendList: List<FriendModel>) :
@@ -31,7 +30,7 @@ class ViewPagerAdapter(private val friendList: List<FriendModel>) :
     }
 
 
-   inner class ViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
         var friendImage: ImageView = itemView.findViewById(R.id.friend_image)
         var friendName: EditText = itemView.findViewById(R.id.nameEt)
         var friendBirthDate: EditText = itemView.findViewById(R.id.birthDateEt)
@@ -43,28 +42,25 @@ class ViewPagerAdapter(private val friendList: List<FriendModel>) :
             friendName.setText(friendModel.friendName)
             friendBirthDate.setText(friendModel.birthDate)
             friendFavColor.setText(friendModel.favColor)
-          //  how to set image here
-           //TODO:  decode base64 string to image
-              val bytes = Base64.decode(friendModel.friendImg, Base64.DEFAULT)
-              val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-              // set bitmap on imageView
+            //  how to set image here
+            //TODO:  decode base64 string to image
+            val bytes = Base64.decode(friendModel.friendImg, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            // set bitmap on imageView
             friendImage.setImageBitmap(bitmap)
 
             // send this list to recyclerAdapter
-            var attrList = ArrayList<AttributesModel>()
+            val attrList = mutableMapOf<String, String>()
 
-              var attributesHashMap = friendModel.otherAtributes
+            val attributesHashMap = friendModel.otherAttributes
 
-            for(attributeKey in attributesHashMap.keys ){
-                attrList.add(AttributesModel(attributeKey,
-                    attributesHashMap[attributeKey].toString()
-                ))
+            for (attributeKey in attributesHashMap.keys) {
+                attrList += attributeKey to attributesHashMap[attributeKey].toString()
                 val adapter = RecyclerAdapter(attrList)
                 recyclerView.adapter = adapter
             }
 
         }
-
 
 
     }

@@ -11,5 +11,5 @@ data class FriendModel(
     val favColor: String,
     val birthDate: String,
     val friendImg: String,
-   val otherAtributes: HashMap<String, String>
+    val otherAttributes: Map<String, String>
 )
