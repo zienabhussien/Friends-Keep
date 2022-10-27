@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.lightfeather.friendskeep.domain.db.FriendDao
 import com.lightfeather.friendskeep.domain.db.FriendDatabase
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,7 +20,7 @@ fun provideDao(friendDatabase: FriendDatabase): FriendDao =
     friendDatabase.getFriendDao()
 
 val friendDatabaseModule = module {
-    single { providesDatabase(get()) }
+    single { providesDatabase(application = androidApplication()) }
     single { provideDao(get()) }
 }
 
