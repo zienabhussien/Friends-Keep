@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FriendDao {
     @Insert
-    fun insertFriend(friendModel: FriendModel)
+    suspend fun insertFriend(friendModel: FriendModel)
 
     @Query("SELECT * FROM friend_table")
     fun getAllUser(): Flow<List<FriendModel>>
 
     @Delete
-    fun deleteFriend(friendModel: FriendModel)
+    suspend fun deleteFriend(friendModel: FriendModel)
 
 }
