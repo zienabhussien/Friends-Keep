@@ -1,6 +1,7 @@
 package com.lightfeather.friendskeep.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.lightfeather.friendskeep.ui.adapter.ViewPagerAdapter
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+private const val TAG = "HomeFragment"
 class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var viewPagerAdapter: ViewPagerAdapter
@@ -39,6 +41,7 @@ class HomeFragment : Fragment() {
     private fun getFriendsList() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             friendViewModel.getFriendsList.collect {
+                Log.d(TAG, "getFriendsList: $it")
                 viewPagerAdapter = ViewPagerAdapter(it)
                 binding.viewPager.adapter = viewPagerAdapter
             }

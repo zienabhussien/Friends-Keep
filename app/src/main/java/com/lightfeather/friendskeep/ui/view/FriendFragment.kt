@@ -13,25 +13,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.AddAttributeDialogBinding
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
+import com.lightfeather.friendskeep.ui.view.FriendFragmentAccessConstants.*
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 class FriendFragment : Fragment() {
     private lateinit var binding: FragmentFriendsBinding
-    var attributesHashMap: HashMap<String, String> = HashMap()
-    val friendViewModel: FriendViewModel by sharedViewModel()
+    private lateinit var args: FriendFragmentArgs
+    private val attributesMap = mutableMapOf<String, String>()
+    private val friendViewModel: FriendViewModel by sharedViewModel()
+    private val accessState: FriendFragmentAccessConstants by lazy { args.accessType ?: DISPLAY }
     lateinit var stringImage: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
-        makeViewsEditable()
+        args = FriendFragmentArgs.fromBundle(requireArguments())
+        enableEditTexts()
 
         binding.addAttrBtn.setOnClickListener {
             initDialog()
@@ -40,9 +48,13 @@ class FriendFragment : Fragment() {
             // select image from gallery
             selectImage()
         }
-        binding.addFriendBtn.setOnClickListener {
-            // save data in room database
-            saveData()
+        binding.actionBtn.setOnClickListener {
+            when (accessState) {
+                ADD -> saveData()
+                UPDATE -> {}
+                DISPLAY -> {}
+            }
+
         }
 
         return binding.root
@@ -59,12 +71,15 @@ class FriendFragment : Fragment() {
         val friendBirthDate = binding.birthDateEt.text.toString()
         val friendFavColor = binding.favColorEt.text.toString()
 
-        val newFriend = FriendModel(0, friendName,
-                             friendFavColor, friendBirthDate,
-                             stringImage,attributesHashMap   )
+        val newFriend = FriendModel(
+            0, friendName,
+            friendFavColor, friendBirthDate,
+            stringImage, attributesMap
+        )
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-             friendViewModel.insertNewFriend(newFriend)
+            friendViewModel.insertNewFriend(newFriend)
+            withContext(Dispatchers.Main) { findNavController().navigateUp() }
         }
     }
 
@@ -93,7 +108,8 @@ class FriendFragment : Fragment() {
         }
 
     }
-  // init alertdialog to insert another attributes
+
+    // init alertdialog to insert another attributes
     private fun initDialog() {
         val attrBinding = AddAttributeDialogBinding
             .inflate(LayoutInflater.from(requireContext()))
@@ -121,7 +137,7 @@ class FriendFragment : Fragment() {
                 // take the values to store and display, then dismiss dialog
                 val attributeTitle = attrBinding.attrEt.text.toString()
                 val attrValue = attrBinding.attrValEt.text.toString()
-                attributesHashMap[attributeTitle] = attrValue
+                attributesMap[attributeTitle] = attrValue
                 alertDialog.dismiss()
             }
         }
@@ -129,16 +145,65 @@ class FriendFragment : Fragment() {
     }
 
 
-    private fun makeViewsEditable() {
-        binding.nameEt.isEnabled = true
-        binding.birthDateEt.isEnabled = true
-        binding.favColorEt.isEnabled = true
+    private fun enableEditTexts() {
+        with(binding) {
+            nameEt.isEnabled = true
+            birthDateEt.isEnabled = true
+            favColorEt.isEnabled = true
+        }
+    }
 
+    private fun disableEditTexts() {
+        with(binding) {
+            nameEt.isEnabled = false
+            birthDateEt.isEnabled = false
+            favColorEt.isEnabled = false
+        }
     }
 
 
     companion object {
         const val REQUEST_PICK_PHOTO = 1001
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setUpUIWithMode(binding, accessState)
+    }
+
+    private fun setUpUIWithMode(
+        binding: FragmentFriendsBinding,
+        accessState: FriendFragmentAccessConstants
+    ) {
+        when (accessState) {
+            ADD -> setUpUIForAdding(binding)
+            UPDATE -> setUpUIForUpdating(binding)
+            DISPLAY -> setUpUIForDisplaying(binding)
+        }
+    }
+
+    private fun setUpUIForDisplaying(binding: FragmentFriendsBinding) {
+        disableEditTexts()
+        with(binding) {
+            addAttrBtn.visibility = View.GONE
+            actionBtn.visibility = View.GONE
+        }
+    }
+
+    private fun setUpUIForUpdating(binding: FragmentFriendsBinding) {
+        enableEditTexts()
+        with(binding) {
+            addAttrBtn.visibility = View.VISIBLE
+            actionBtn.setImageResource(R.drawable.ic_baseline_save_24)
+        }
+    }
+
+    private fun setUpUIForAdding(binding: FragmentFriendsBinding) {
+        enableEditTexts()
+        with(binding) {
+            addAttrBtn.visibility = View.VISIBLE
+            actionBtn.setImageResource(R.drawable.ic_baseline_save_24)
+        }
     }
 }

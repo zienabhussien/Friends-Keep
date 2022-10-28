@@ -20,8 +20,10 @@
         android:name="com.lightfeather.friendskeep.ui.view.FriendFragment"
         android:label="fragment_friends"
         tools:layout="@layout/fragment_friends">
-        <argument android:name="access_type"
-            app:argType=".ui.view.FriendFragmentAccessConstants"/>
+        <argument
+            android:name="access_type"
+            app:argType=".ui.view.FriendFragmentAccessConstants"
+             />
     </fragment>
 
 </navigation>
