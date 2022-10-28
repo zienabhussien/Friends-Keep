@@ -10,15 +10,18 @@
         android:id="@+id/homeFragment"
         android:name="com.lightfeather.friendskeep.ui.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_friendsFragment2"
-            app:destination="@id/friendsFragment2" />
+            android:id="@+id/action_homeFragment_to_friendsFragment"
+            app:destination="@id/friendsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/friendsFragment2"
-        android:name="com.lightfeather.friendskeep.ui.view.FriendsFragment"
+        android:id="@+id/friendsFragment"
+        android:name="com.lightfeather.friendskeep.ui.view.FriendFragment"
         android:label="fragment_friends"
-        tools:layout="@layout/fragment_friends" />
+        tools:layout="@layout/fragment_friends">
+        <argument android:name="access_type"
+            app:argType=".ui.view.FriendFragmentAccessConstants"/>
+    </fragment>
 
 </navigation>

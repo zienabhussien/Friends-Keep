@@ -4,8 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
@@ -15,17 +13,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.cast.framework.media.ImagePicker
 import com.lightfeather.friendskeep.databinding.AddAttributeDialogBinding
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
-class FriendsFragment : Fragment() {
+class FriendFragment : Fragment() {
     private lateinit var binding: FragmentFriendsBinding
     var attributesHashMap: HashMap<String, String> = HashMap()
     val friendViewModel: FriendViewModel by sharedViewModel()

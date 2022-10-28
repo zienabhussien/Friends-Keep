@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FriendsFragment">
+    tools:context=".ui.view.FriendFragment">
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -52,8 +53,8 @@
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="#fff"
                     android:enabled="false"
-                    android:textColor="@color/black"
                     android:text="Friend Name"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -84,8 +85,8 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="#fff"
-                    android:text="Birth date"
                     android:enabled="false"
+                    android:text="Birth date"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
@@ -118,8 +119,8 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="#fff"
-                    android:text="Fav Color"
                     android:enabled="false"
+                    android:text="Fav Color"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
