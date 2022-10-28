@@ -14,7 +14,7 @@ interface FriendDao {
     suspend fun insertFriend(friendModel: FriendModel)
 
     @Query("SELECT * FROM friend_table")
-    suspend fun getAllUser():Flow<List<FriendModel>>
+    fun getAllUser(): Flow<List<FriendModel>>
 
     @Delete
     suspend fun deleteFriend(friendModel: FriendModel)

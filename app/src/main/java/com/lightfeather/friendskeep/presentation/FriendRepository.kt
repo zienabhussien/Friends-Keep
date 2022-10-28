@@ -9,22 +9,20 @@ import kotlinx.coroutines.withContext
 
 class FriendRepository(private val friendDatabase: FriendDatabase) {
 
-    fun getAllFriends() : Flow<List<FriendModel>> =
-        flow{
-            friendDatabase.getFriendDao().getAllUser()
-        }
+    fun getAllFriends(): Flow<List<FriendModel>> = friendDatabase.getFriendDao().getAllUser()
 
-    suspend fun insertFriend(friend: FriendModel) = withContext(Dispatchers.IO){
+
+    suspend fun insertFriend(friend: FriendModel) =
         friendDatabase.getFriendDao().insertFriend(friend)
-    }
 
-    suspend fun deleteFriend(friend: FriendModel) = withContext(Dispatchers.IO){
+
+    suspend fun deleteFriend(friend: FriendModel) =
         friendDatabase.getFriendDao().deleteFriend(friend)
-     }
+
 
 //    suspend fun getAllFriends() = withContext(Dispatchers.IO){
 //        friendDatabase.getFriendDao().getAllUser()
 //    }
 
-    
+
 }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.FriendsFragment">
+    tools:context=".ui.view.FriendFragment">
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,9 +21,10 @@
                 android:layout_height="150dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/cute_imge"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_person_24"
+                app:civ_border_color="#000000"
+                app:civ_border_width="8dp"
                 app:layout_column="0"
                 app:layout_row="0" />
 
@@ -52,8 +54,8 @@
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="#fff"
                     android:enabled="false"
+                    android:hint="@string/friend_name"
                     android:textColor="@color/black"
-                    android:text="Friend Name"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -84,8 +86,8 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="#fff"
-                    android:text="Birth date"
                     android:enabled="false"
+                    android:hint="@string/birth_date"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
@@ -118,8 +120,8 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="#fff"
-                    android:text="Fav Color"
                     android:enabled="false"
+                    android:hint="@string/fav_color"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
@@ -163,7 +165,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addFriendBtn"
+        android:id="@+id/actionBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
