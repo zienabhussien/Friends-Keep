@@ -24,7 +24,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_person_24"
                 app:civ_border_color="#000000"
-                app:civ_border_width="8dp"
+                app:civ_border_width="3dp"
                 app:layout_column="0"
                 app:layout_row="0" />
 
@@ -44,7 +44,7 @@
 
                 <EditText
                     android:id="@+id/nameEt"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_below="@id/friend_image"
                     android:layout_centerHorizontal="true"
@@ -77,7 +77,7 @@
 
                 <EditText
                     android:id="@+id/birthDateEt"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_below="@id/nameEt"
                     android:layout_centerHorizontal="true"
@@ -111,7 +111,7 @@
 
                 <EditText
                     android:id="@+id/favColorEt"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_below="@id/birthDateEt"
                     android:layout_centerHorizontal="true"
