@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.view.HomeFragment">
 
+
     <LinearLayout
         android:id="@+id/temp_layout"
         android:layout_width="match_parent"
@@ -15,11 +16,6 @@
         android:visibility="gone"
         android:orientation="vertical">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" />
 
         <ImageView
             android:layout_width="@dimen/_150sdp"
@@ -54,4 +50,11 @@
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/purple_200"
         app:tint="@color/white" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
 </RelativeLayout>
