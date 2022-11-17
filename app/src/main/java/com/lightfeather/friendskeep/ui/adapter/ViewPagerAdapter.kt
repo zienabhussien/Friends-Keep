@@ -13,7 +13,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.domain.FriendModel
 
-class ViewPagerAdapter(private val friendList: List<FriendModel>) :
+class ViewPagerAdapter(
+    private val friendList: List<FriendModel>,
+    private val onDeleteClick: (FriendModel) -> Unit = {}
+) :
     RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>() {
 
 
@@ -40,6 +43,9 @@ class ViewPagerAdapter(private val friendList: List<FriendModel>) :
         val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerview_id)
         val actionBtn: FloatingActionButton = itemView.findViewById(R.id.actionBtn)
         val addImg: ImageView = itemView.findViewById(R.id.add_imageView)
+        val deleteImg: ImageView = itemView.findViewById(R.id.delete_friend)
+        val editImg: ImageView = itemView.findViewById(R.id.edit_friend)
+        val favImg: ImageView = itemView.findViewById(R.id.fav_friend)
 
         fun bind(friendModel: FriendModel) {
             friendName.setText(friendModel.friendName)
@@ -48,6 +54,13 @@ class ViewPagerAdapter(private val friendList: List<FriendModel>) :
             addAttrBtn.visibility = View.GONE
             actionBtn.visibility = View.GONE
             addImg.visibility = View.GONE
+            deleteImg.visibility = View.VISIBLE
+            editImg.visibility = View.VISIBLE
+            favImg.visibility = View.VISIBLE
+
+            deleteImg.setOnClickListener {
+                onDeleteClick(friendModel)
+            }
 
             //  how to set image here
             //TODO:  decode base64 string to image

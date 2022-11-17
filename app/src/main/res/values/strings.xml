@@ -5,4 +5,6 @@
     <string name="friend_name">Friend Name</string>
     <string name="birth_date">Birth date</string>
     <string name="fav_color">Fav Color</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

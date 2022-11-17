@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.lightfeather.friendskeep.databinding.FragmentHomeBinding
 import com.lightfeather.friendskeep.ui.adapter.ViewPagerAdapter
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 private const val TAG = "HomeFragment"
@@ -94,6 +97,7 @@ class HomeFragment : Fragment() {
     return getFriendsList
     }
      */
+
 
 
 }
