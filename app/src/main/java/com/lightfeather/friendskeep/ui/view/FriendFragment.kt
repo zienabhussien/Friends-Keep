@@ -34,15 +34,15 @@ import java.util.*
 
 
 class FriendFragment : Fragment() {
-    private  val TAG = "FriendFragment"
+    private val TAG = "FriendFragment"
     private lateinit var binding: FragmentFriendsBinding
     private lateinit var args: FriendFragmentArgs
     private val attributesMap = mutableMapOf<String, String>()
     private val friendViewModel: FriendViewModel by sharedViewModel()
     private val accessState: FriendFragmentAccessConstants by lazy { args.accessType ?: DISPLAY }
-    lateinit var stringImage: String
+    var stringImage: String = ""
     lateinit var hexFavColor: String
-    var  isImageAdded = true
+    var isImageAdded = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,7 +63,7 @@ class FriendFragment : Fragment() {
 
         binding.actionBtn.setOnClickListener {
             when (accessState) {
-                ADD ->    validateThenSaveData()
+                ADD -> validateThenSaveData()
                 UPDATE -> {}
                 DISPLAY -> {}
             }
@@ -96,15 +96,17 @@ class FriendFragment : Fragment() {
         }
     }
 
-    fun validateThenSaveData(){
-        if(stringImage.isEmpty()){
-            Toast.makeText(requireContext(),
-                "Please select an image!",Toast.LENGTH_SHORT).show()
-        }else if(binding.nameEt.text.isEmpty()){
+    fun validateThenSaveData() {
+        if (stringImage.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "Please select an image!", Toast.LENGTH_SHORT
+            ).show()
+        } else if (binding.nameEt.text.isEmpty()) {
             binding.nameEt.error = "Please enter friend name"
-        }else if(binding.birthDateEt.text.isEmpty()){
+        } else if (binding.birthDateEt.text.isEmpty()) {
             binding.birthDateEt.error = "Please select the friend birth date"
-        } else{
+        } else {
             saveData()
         }
     }
@@ -175,8 +177,8 @@ class FriendFragment : Fragment() {
     private fun enableEditTexts() {
         with(binding) {
             nameEt.isEnabled = true
-           // birthDateEt.isEnabled = true
-           // favColorEt.isEnabled = true
+            // birthDateEt.isEnabled = true
+            // favColorEt.isEnabled = true
             binding.birthdateCard.setOnClickListener { selectDate() }
             binding.favColorCard.setOnClickListener { selectFavColor(binding.favColorCard) }
 
@@ -237,7 +239,7 @@ class FriendFragment : Fragment() {
         }
     }
 
-    private fun selectDate(){
+    private fun selectDate() {
         //  val
         val calender = Calendar.getInstance()
         val year = calender.get(Calendar.YEAR)
@@ -250,14 +252,15 @@ class FriendFragment : Fragment() {
 
                 // Display Selected date in textbox
                 //  lblDate.setText("" + dayOfMonth + " " + MONTHS[monthOfYear] + ", " + year)
-                binding.birthDateEt.setText("$dayOfMonth /${monthOfYear+1} /$year")
+                binding.birthDateEt.setText("$dayOfMonth /${monthOfYear + 1} /$year")
 
-            }, year, month, day)
+            }, year, month, day
+        )
 
         dpd.show()
     }
 
-    private fun selectFavColor(v:View){
+    private fun selectFavColor(v: View) {
 
         val colorPickerPopUp = ColorPickerPopUp(context) // Pass the context.
 
