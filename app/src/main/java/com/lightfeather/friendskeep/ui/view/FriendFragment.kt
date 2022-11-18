@@ -14,62 +14,76 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.AddAttributeDialogBinding
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
+import com.lightfeather.friendskeep.domain.application.toBitmap
+import com.lightfeather.friendskeep.ui.changeLayersColor
 import com.lightfeather.friendskeep.ui.view.FriendFragmentAccessConstants.*
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
 import com.mrudultora.colorpicker.ColorPickerPopUp
 import com.mrudultora.colorpicker.ColorPickerPopUp.OnPickColorListener
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class FriendFragment : Fragment() {
-    private  val TAG = "FriendFragment"
+    private val TAG = "FriendFragment"
     private lateinit var binding: FragmentFriendsBinding
     private lateinit var args: FriendFragmentArgs
     private val attributesMap = mutableMapOf<String, String>()
     private val friendViewModel: FriendViewModel by sharedViewModel()
-    private val accessState: FriendFragmentAccessConstants by lazy { args.accessType ?: DISPLAY }
+    private val accessState: FriendFragmentAccessConstants by lazy { args.accessType }
+    private val currFriend: FriendModel? by lazy { args.currFriend }
     private var stringImage: String = ""
-    lateinit var hexFavColor: String
-    var isImageAdded = true
+    var hexFavColor: String? by Delegates.observable(null) { property, oldValue, newValue ->
+        newValue?.let {
+            binding.animatedBackground1.changeLayersColor(newValue)
+            binding.animatedBackground2.changeLayersColor(newValue)
+            binding.favColorEt.setHintTextColor(Color.parseColor(newValue))
+            binding.addAttrBtn.setBackgroundColor(Color.parseColor(newValue))
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFriendsBinding.inflate(inflater, container, false)
-        args = FriendFragmentArgs.fromBundle(requireArguments())
+        with(binding) {
+            args = FriendFragmentArgs.fromBundle(requireArguments())
 
-        enableEditTexts()
+            enableEditTexts()
 
-        binding.addAttrBtn.setOnClickListener {
-            initDialog()
-        }
+            addAttrBtn.setOnClickListener { initDialog() }
+            addImageView.setOnClickListener { selectImage() }
+            actionBtn.setOnClickListener {
+                when (accessState) {
+                    ADD -> validateThen(::insertNewFriend)
+                    UPDATE -> validateThen(::updateFriend)
+                    DISPLAY -> {}
+                }
 
-        binding.addImageView.setOnClickListener {
-            // select image from gallery
-            selectImage()
-        }
-
-        binding.actionBtn.setOnClickListener {
-            when (accessState) {
-                ADD ->    validateThenSaveData()
-                UPDATE -> {}
-                DISPLAY -> {}
             }
-
         }
 
         return binding.root
+    }
+
+    private fun updateFriend() {
+        CoroutineScope(Dispatchers.IO).launch {
+            friendViewModel.updateFriend(getCurrentFriendData().copy(id = currFriend?.id ?: 0))
+            withContext(Dispatchers.Main) { findNavController().navigateUp() }
+        }
     }
 
     private fun selectImage() {
@@ -78,24 +92,26 @@ class FriendFragment : Fragment() {
         startActivityForResult(galleryIntent, REQUEST_PICK_PHOTO)
     }
 
-    private fun saveData() {
+    private fun getCurrentFriendData(): FriendModel {
         val friendName = binding.nameEt.text.toString()
         val friendBirthDate = binding.birthDateEt.text.toString()
-        //val friendFavColor = binding.favColorEt.text.toString()
-
-        val newFriend = FriendModel(
-            0, friendName,
-            hexFavColor, friendBirthDate,
-            stringImage, attributesMap
+        return FriendModel(
+            friendName,
+            hexFavColor ?: "",
+            friendBirthDate,
+            stringImage,
+            attributesMap
         )
+    }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            friendViewModel.insertNewFriend(newFriend)
+    private fun insertNewFriend() {
+        CoroutineScope(Dispatchers.IO).launch {
+            friendViewModel.insertNewFriend(getCurrentFriendData())
             withContext(Dispatchers.Main) { findNavController().navigateUp() }
         }
     }
 
-    private fun validateThenSaveData() {
+    private fun validateThen(onValid: () -> Unit) {
         if (stringImage.isEmpty()) {
             Toast.makeText(
                 requireContext(),
@@ -103,12 +119,13 @@ class FriendFragment : Fragment() {
             ).show()
         } else if (binding.nameEt.text.isEmpty()) {
             binding.nameEt.error = "Please enter friend name"
-        }else if(binding.birthDateEt.text.isEmpty()){
+        } else if (binding.birthDateEt.text.isEmpty()) {
             binding.birthDateEt.error = "Please select the friend birth date"
-        } else{
-            saveData()
+        } else {
+            onValid()
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -176,8 +193,6 @@ class FriendFragment : Fragment() {
     private fun enableEditTexts() {
         with(binding) {
             nameEt.isEnabled = true
-            // birthDateEt.isEnabled = true
-            // favColorEt.isEnabled = true
             birthdateCard.setOnClickListener { selectDate() }
             favColorCard.setOnClickListener { selectFavColor() }
 
@@ -227,6 +242,17 @@ class FriendFragment : Fragment() {
         with(binding) {
             addAttrBtn.visibility = View.VISIBLE
             actionBtn.setImageResource(R.drawable.ic_baseline_save_24)
+            currFriend?.let {
+                stringImage = it.friendImg
+                nameEt.setText(it.friendName)
+                birthDateEt.setText(it.birthDate)
+                animatedBackground1.changeLayersColor(it.favColor)
+                animatedBackground2.changeLayersColor(it.favColor)
+                binding.favColorEt.setHintTextColor(Color.parseColor(it.favColor))
+                binding.addAttrBtn.setBackgroundColor(Color.parseColor(it.favColor))
+                friendImage.setImageBitmap(it.friendImg.toBitmap())
+
+            }
         }
     }
 
@@ -238,7 +264,7 @@ class FriendFragment : Fragment() {
         }
     }
 
-    private fun selectDate(){
+    private fun selectDate() {
         //  val
         val calender = Calendar.getInstance()
         val year = calender.get(Calendar.YEAR)
@@ -257,7 +283,7 @@ class FriendFragment : Fragment() {
         dpd.show()
     }
 
-    private fun selectFavColor(){
+    private fun selectFavColor() {
 
         val colorPickerPopUp = ColorPickerPopUp(context) // Pass the context.
 
@@ -266,11 +292,9 @@ class FriendFragment : Fragment() {
             .setDialogTitle(getString(R.string.choose_favortie_color))
             .setOnPickColorListener(object : OnPickColorListener {
                 override fun onColorPicked(color: Int) {
-                    // handle the use of color
                     binding.favColorEt.setTextColor(color)
                     hexFavColor = java.lang.String.format("#%06X", 0xFFFFFF and color)
-                    binding.favColorEt.setBackgroundColor(Color.parseColor(hexFavColor))
-                    binding.favColorCard.setBackgroundColor(Color.parseColor(hexFavColor))
+                    binding.favColorEt.setHintTextColor(Color.parseColor(hexFavColor))
 
                 }
 

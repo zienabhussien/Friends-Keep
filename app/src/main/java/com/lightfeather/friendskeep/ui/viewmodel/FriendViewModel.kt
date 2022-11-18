@@ -17,4 +17,8 @@ class FriendViewModel(private val friendRepository: FriendRepository): ViewModel
         friendRepository.deleteFriend(friendModel)
     }
 
+    fun updateFriend(currentFriendData: FriendModel) {
+        friendRepository.updateFriend(currentFriendData)
+    }
+
 }

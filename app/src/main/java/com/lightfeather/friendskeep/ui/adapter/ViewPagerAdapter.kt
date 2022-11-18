@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
+import com.lightfeather.friendskeep.domain.application.toBitmap
 import com.lightfeather.friendskeep.ui.changeLayersColor
 
 class ViewPagerAdapter(
     private val friendList: List<FriendModel>,
-    private val onDeleteClick: (FriendModel) -> Unit = {}
+    private val onDeleteClick: (FriendModel) -> Unit = {},
+    private val onUpdateClicked: (FriendModel) -> Unit = {}
 ) :
     RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>() {
 
@@ -49,14 +51,11 @@ class ViewPagerAdapter(
                 actionBtn.visibility = View.GONE
                 addImageView.visibility = View.GONE
                 friendManagementContainer.visibility = View.VISIBLE
-                deleteFriend.setOnClickListener {
-                    onDeleteClick(friendModel)
-                }
+                deleteFriend.setOnClickListener { onDeleteClick(friendModel) }
+                editFriend.setOnClickListener { onUpdateClicked(friendModel) }
 
                 if (friendModel.friendImg != "") {
-                    val bytes = Base64.decode(friendModel.friendImg, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                    friendImage.setImageBitmap(bitmap)
+                    friendImage.setImageBitmap(friendModel.friendImg.toBitmap())
                 }
 
                 // send this list to recyclerAdapter

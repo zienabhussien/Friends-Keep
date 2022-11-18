@@ -12,4 +12,6 @@
     <string name="cancel">Cancel</string>
     <string name="friend_removed">Friend removed</string>
     <string name="choose_favortie_color">Choose favorite color</string>
+    <string name="undo">Undo</string>
+    <string name="add_more">add more ...</string>
 </resources>

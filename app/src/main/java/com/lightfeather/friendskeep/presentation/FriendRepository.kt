@@ -19,10 +19,8 @@ class FriendRepository(private val friendDatabase: FriendDatabase) {
     suspend fun deleteFriend(friend: FriendModel) =
         friendDatabase.getFriendDao().deleteFriend(friend)
 
-
-//    suspend fun getAllFriends() = withContext(Dispatchers.IO){
-//        friendDatabase.getFriendDao().getAllUser()
-//    }
+    fun updateFriend(currentFriendData: FriendModel) =
+        friendDatabase.getFriendDao().updateFriend(currentFriendData)
 
 
 }

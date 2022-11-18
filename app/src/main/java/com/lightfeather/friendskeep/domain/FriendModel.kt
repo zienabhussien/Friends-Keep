@@ -5,11 +5,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "friend_table")
 data class FriendModel(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val friendName: String,
     val favColor: String,
     val birthDate: String,
     val friendImg: String,
-    val otherAttributes: Map<String, String>
-)
+    val otherAttributes: Map<String, String>,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+
+    ) : java.io.Serializable

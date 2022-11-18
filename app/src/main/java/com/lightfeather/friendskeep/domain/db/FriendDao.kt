@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.lightfeather.friendskeep.domain.FriendModel
 import kotlinx.coroutines.flow.Flow
 
@@ -18,5 +19,8 @@ interface FriendDao {
 
     @Delete
     suspend fun deleteFriend(friendModel: FriendModel)
+
+    @Update
+    fun updateFriend(currentFriendData: FriendModel)
 
 }

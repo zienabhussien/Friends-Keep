@@ -21,9 +21,8 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-private const val TAG = "HomeFragment"
-
 class HomeFragment : Fragment() {
+    private val TAG = "HomeFragment"
     lateinit var binding: FragmentHomeBinding
     lateinit var viewPagerAdapter: ViewPagerAdapter
     private val friendViewModel: FriendViewModel by sharedViewModel()
@@ -36,11 +35,16 @@ class HomeFragment : Fragment() {
 
         getFriendsList()
 
-        binding.addFriendBtn.setOnClickListener {
-            findNavController().navigate(
-                HomeFragmentDirections
-                    .actionHomeFragmentToFriendsFragment(FriendFragmentAccessConstants.ADD)
-            )
+        with(binding) {
+            addFriendBtn.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections
+                        .actionHomeFragmentToFriendsFragment(
+                            FriendFragmentAccessConstants.ADD,
+                            null
+                        )
+                )
+            }
         }
 
         return binding.root
@@ -52,7 +56,7 @@ class HomeFragment : Fragment() {
             friendViewModel.getFriendsList.collect {
                 Log.d(TAG, "getFriendsList: inlist $it")
                 binding.tempLayout.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
-                viewPagerAdapter = ViewPagerAdapter(it) {
+                viewPagerAdapter = ViewPagerAdapter(it, onDeleteClick = {
                     val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
                         .setMessage(getString(R.string.want_to_delete_your_friend))
                         .setTitle(resources.getString(R.string.delete))
@@ -66,7 +70,7 @@ class HomeFragment : Fragment() {
                                 getString(R.string.friend_removed),
                                 Snackbar.LENGTH_LONG
                             )
-                                .setAction("Undo") { _ ->
+                                .setAction(getString(R.string.undo)) { _ ->
                                     Log.d(TAG, "getFriendsList: undo")
                                     CoroutineScope(Dispatchers.IO).launch {
                                         friendViewModel.insertNewFriend(it)
@@ -79,7 +83,13 @@ class HomeFragment : Fragment() {
 
                     val alert: AlertDialog = builder.create()
                     alert.show()
-                }
+                }, onUpdateClicked = { friend ->
+                    findNavController().navigate(
+                        HomeFragmentDirections.actionHomeFragmentToFriendsFragment(
+                            FriendFragmentAccessConstants.UPDATE, friend
+                        )
+                    )
+                })
                 binding.viewPager.adapter = viewPagerAdapter
 
             }

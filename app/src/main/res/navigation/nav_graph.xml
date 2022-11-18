@@ -24,6 +24,11 @@
             android:name="access_type"
             app:argType=".ui.view.FriendFragmentAccessConstants"
              />
+        <argument
+            android:name="curr_friend"
+            app:argType="com.lightfeather.friendskeep.domain.FriendModel"
+            app:nullable="true"
+            />
     </fragment>
 
 </navigation>
