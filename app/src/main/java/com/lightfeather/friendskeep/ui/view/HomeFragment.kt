@@ -49,7 +49,9 @@ class HomeFragment : Fragment() {
                 if(it.isNotEmpty()) {
                     binding.tempLayout.visibility = View.GONE
 
-                    viewPagerAdapter = ViewPagerAdapter(it)
+                    viewPagerAdapter = ViewPagerAdapter(it){
+
+                    }
                     binding.viewPager.adapter = viewPagerAdapter
                 }else{
                     binding.tempLayout.visibility = View.VISIBLE

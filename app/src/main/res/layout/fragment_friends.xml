@@ -39,38 +39,29 @@
                 android:id="@+id/friend_management_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_marginStart="@dimen/_16sdp"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:visibility="gone">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/delete_friend"
-                    android:layout_width="@dimen/_32sdp"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_margin="@dimen/_4sdp"
+                    android:layout_width="@dimen/_38sdp"
+                    android:layout_height="@dimen/_38sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_4sdp"
                     android:contentDescription="@string/delete"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_baseline_delete_24"
-                    app:civ_circle_background_color="@color/white" />
+                    android:src="@drawable/delete" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/edit_friend"
                     android:layout_width="@dimen/_32sdp"
                     android:layout_height="@dimen/_32sdp"
                     android:layout_margin="@dimen/_4sdp"
                     android:contentDescription="@string/edit"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_baseline_mode_edit_24"
-                    app:civ_circle_background_color="@color/white" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/fav_friend"
-                    android:layout_width="@dimen/_32sdp"
-                    android:layout_height="@dimen/_32sdp"
-                    android:layout_margin="@dimen/_4sdp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_baseline_star_border_24"
-                    app:civ_circle_background_color="@color/white" />
+                    android:src="@drawable/ic_baseline_mode_edit_24" />
 
 
             </LinearLayout>
@@ -81,17 +72,20 @@
                 android:layout_height="@dimen/_180sdp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_60sdp"
-                android:src="@drawable/frame5" />
+                android:src="@drawable/frame" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/friend_image"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_150sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
                 android:layout_alignStart="@id/img_frame"
                 android:layout_alignTop="@id/img_frame"
+                android:layout_marginBottom="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_minus1sdp"
                 android:layout_alignEnd="@id/img_frame"
                 android:layout_alignBottom="@id/img_frame"
-                android:padding="@dimen/_26sdp"
+                android:padding="@dimen/_42sdp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_person_24"
                 app:layout_column="0"
