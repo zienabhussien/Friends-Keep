@@ -3,10 +3,7 @@
     android:height="48dp"
     android:viewportWidth="64"
     android:viewportHeight="64">
-  <path
-      android:fillColor="#FF000000"
-      android:pathData="m16,56.04 l30,-30h13l-30,30h-13z"
-      android:fillAlpha="0.19608"/>
+
   <path
       android:pathData="m31,41.04 l-10,-10v-5l20,-20 10,10 -5,10 -15,15z"
       android:fillColor="#6595b9"/>
