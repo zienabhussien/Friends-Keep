@@ -11,10 +11,8 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         startKoin {
             androidContext(this@BaseApplication)
-
             modules(
                 listOf(
                     friendDatabaseModule,
@@ -23,6 +21,5 @@ class BaseApplication : Application() {
                 )
             )
         }
-
     }
 }

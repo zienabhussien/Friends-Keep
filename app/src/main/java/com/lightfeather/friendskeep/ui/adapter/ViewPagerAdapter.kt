@@ -1,8 +1,5 @@
 package com.lightfeather.friendskeep.ui.adapter
 
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,44 +40,21 @@ class ViewPagerAdapter(
             with(binding) {
                 nameEt.setText(friendModel.friendName)
                 birthDateEt.setText(friendModel.birthDate)
+                if (friendModel.friendImg.isNotEmpty()) {
+                    friendImage.setImageBitmap(friendModel.friendImg.toBitmap())
+                }
 
-                favColorCard.visibility = View.GONE
                 animatedBackground1.changeLayersColor(friendModel.favColor)
                 animatedBackground2.changeLayersColor(friendModel.favColor)
+                favColorCard.visibility = View.GONE
                 addAttrBtn.visibility = View.GONE
                 actionBtn.visibility = View.GONE
                 addImageView.visibility = View.GONE
                 friendManagementContainer.visibility = View.VISIBLE
                 deleteFriend.setOnClickListener { onDeleteClick(friendModel) }
                 editFriend.setOnClickListener { onUpdateClicked(friendModel) }
-
-                if (friendModel.friendImg != "") {
-                    friendImage.setImageBitmap(friendModel.friendImg.toBitmap())
-                }
-
-                // send this list to recyclerAdapter
-                val attrList = mutableMapOf<String, String>()
-
-                val attributesHashMap = friendModel.otherAttributes
-
-                for (attributeKey in attributesHashMap.keys) {
-                    attrList += attributeKey to attributesHashMap[attributeKey].toString()
-                    val adapter = RecyclerAdapter(attrList)
-                    this.otherAttrs.adapter = adapter
-                }
+                otherAttrs.adapter = RecyclerAdapter(friendModel.otherAttributes)
             }
-
         }
-
-
     }
 }
-/**
- *  // decode base64 string to image
-fun getImageFromString() {
-val bytes = Base64.decode(stringImage, Base64.DEFAULT)
-val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-// set bitmap on imageView
-//  binding.friendImage.setImageBitmap(bitmap)
-}
- */
