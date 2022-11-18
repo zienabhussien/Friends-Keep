@@ -1,7 +1,9 @@
 package com.lightfeather.friendskeep.ui
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.ColorFilter
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
@@ -25,4 +27,16 @@ fun LottieAnimationView.changeLayersColor(colorHex: String) {
     val keyPath = KeyPath("**")
     val callback: LottieValueCallback<ColorFilter> = LottieValueCallback(filter)
     addValueCallback(keyPath, LottieProperty.COLOR_FILTER, callback)
+}
+
+
+fun Activity.hideSoftKeyboard() {
+    val inputMethodManager =
+        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager;
+    if (inputMethodManager.isAcceptingText) {
+        inputMethodManager.hideSoftInputFromWindow(
+            currentFocus?.windowToken,
+            0
+        );
+    }
 }

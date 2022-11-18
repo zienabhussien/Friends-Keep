@@ -14,6 +14,8 @@ import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.FragmentHomeBinding
 import com.lightfeather.friendskeep.ui.adapter.ViewPagerAdapter
 import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,42 +50,41 @@ class HomeFragment : Fragment() {
     private fun getFriendsList() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             friendViewModel.getFriendsList.collect {
-                Log.d(TAG, "getFriendsList: inlist")
+                Log.d(TAG, "getFriendsList: inlist $it")
                 binding.tempLayout.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
-                if (it.isNotEmpty()) {
-
-
-                    viewPagerAdapter = ViewPagerAdapter(it) {
-                        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-                            .setMessage(getString(R.string.want_to_delete_your_friend))
-                            .setTitle(resources.getString(R.string.delete))
-                            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
-                        builder.setPositiveButton(resources.getString(R.string.sure)) { _, _ ->
-                            lifecycleScope.launchWhenCreated {
-                                friendViewModel.deleteFriend(it)
-                                Snackbar.make(
-                                    binding.root,
-                                    getString(R.string.friend_removed),
-                                    Snackbar.LENGTH_LONG
-                                )
-                                    .setAction("Undo") { _ ->
-                                        launch { friendViewModel.insertNewFriend(it) }
+                viewPagerAdapter = ViewPagerAdapter(it) {
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+                        .setMessage(getString(R.string.want_to_delete_your_friend))
+                        .setTitle(resources.getString(R.string.delete))
+                        .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
+                    builder.setPositiveButton(resources.getString(R.string.sure)) { _, _ ->
+                        lifecycleScope.launchWhenCreated {
+                            friendViewModel.deleteFriend(it)
+                            viewPagerAdapter.notifyDataSetChanged()
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.friend_removed),
+                                Snackbar.LENGTH_LONG
+                            )
+                                .setAction("Undo") { _ ->
+                                    Log.d(TAG, "getFriendsList: undo")
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        friendViewModel.insertNewFriend(it)
                                     }
-                                    .show()
-                            }
-                        }
 
-                        val alert: AlertDialog = builder.create()
-                        alert.show()
+                                }
+                                .show()
+                        }
                     }
-                    binding.viewPager.adapter = viewPagerAdapter
-                }else{
-                    binding.tempLayout.visibility = View.VISIBLE
+
+                    val alert: AlertDialog = builder.create()
+                    alert.show()
                 }
+                binding.viewPager.adapter = viewPagerAdapter
+
             }
         }
     }
-
 
 
 }
