@@ -10,8 +10,6 @@ import com.lightfeather.friendskeep.R
 class RecyclerAdapter(private val attributeList: Map<String, String>) :
     RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    var attrHashMap: HashMap<String, String> = HashMap<String, String>()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)

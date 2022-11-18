@@ -4,7 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="friend_name">Friend Name</string>
     <string name="birth_date">Birth date</string>
-    <string name="fav_color">Fav Color</string>
+    <string name="fav_color">Favorite Color</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="choose_favortie_color">Choose favorite color</string>
 </resources>

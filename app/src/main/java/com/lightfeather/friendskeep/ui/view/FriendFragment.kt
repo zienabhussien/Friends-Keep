@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.AddAttributeDialogBinding
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
@@ -34,15 +33,15 @@ import java.util.*
 
 
 class FriendFragment : Fragment() {
-    private  val TAG = "FriendFragment"
+    private val TAG = "FriendFragment"
     private lateinit var binding: FragmentFriendsBinding
     private lateinit var args: FriendFragmentArgs
     private val attributesMap = mutableMapOf<String, String>()
     private val friendViewModel: FriendViewModel by sharedViewModel()
     private val accessState: FriendFragmentAccessConstants by lazy { args.accessType ?: DISPLAY }
-    lateinit var stringImage: String
+    private var stringImage: String = ""
     lateinit var hexFavColor: String
-    var  isImageAdded = true
+    var isImageAdded = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,7 +62,7 @@ class FriendFragment : Fragment() {
 
         binding.actionBtn.setOnClickListener {
             when (accessState) {
-                ADD ->    validateThenSaveData()
+                ADD -> validateThenSaveData()
                 UPDATE -> {}
                 DISPLAY -> {}
             }
@@ -96,15 +95,17 @@ class FriendFragment : Fragment() {
         }
     }
 
-    fun validateThenSaveData(){
-        if(stringImage.isEmpty()){
-            Toast.makeText(requireContext(),
-                "Please select an image!",Toast.LENGTH_SHORT).show()
-        }else if(binding.nameEt.text.isEmpty()){
+    private fun validateThenSaveData() {
+        if (stringImage.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "Please select an image!", Toast.LENGTH_SHORT
+            ).show()
+        } else if (binding.nameEt.text.isEmpty()) {
             binding.nameEt.error = "Please enter friend name"
-        }else if(binding.birthDateEt.text.isEmpty()){
+        } else if (binding.birthDateEt.text.isEmpty()) {
             binding.birthDateEt.error = "Please select the friend birth date"
-        } else{
+        } else {
             saveData()
         }
     }
@@ -175,10 +176,10 @@ class FriendFragment : Fragment() {
     private fun enableEditTexts() {
         with(binding) {
             nameEt.isEnabled = true
-           // birthDateEt.isEnabled = true
-           // favColorEt.isEnabled = true
-            binding.birthdateCard.setOnClickListener { selectDate() }
-            binding.favColorCard.setOnClickListener { selectFavColor(binding.favColorCard) }
+            // birthDateEt.isEnabled = true
+            // favColorEt.isEnabled = true
+            birthdateCard.setOnClickListener { selectDate() }
+            favColorCard.setOnClickListener { selectFavColor() }
 
         }
     }
@@ -237,7 +238,7 @@ class FriendFragment : Fragment() {
         }
     }
 
-    private fun selectDate(){
+    private fun selectDate() {
         //  val
         val calender = Calendar.getInstance()
         val year = calender.get(Calendar.YEAR)
@@ -245,30 +246,31 @@ class FriendFragment : Fragment() {
         val day = calender.get(Calendar.DAY_OF_MONTH)
 
 
-        val dpd = DatePickerDialog(requireActivity(),
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-                // Display Selected date in textbox
-                //  lblDate.setText("" + dayOfMonth + " " + MONTHS[monthOfYear] + ", " + year)
-                binding.birthDateEt.setText("$dayOfMonth /${monthOfYear+1} /$year")
-
-            }, year, month, day)
+        val dpd = DatePickerDialog(
+            requireActivity(),
+            { view, year, monthOfYear, dayOfMonth -> binding.birthDateEt.setText("$dayOfMonth /${monthOfYear + 1} /$year") },
+            year,
+            month,
+            day
+        )
 
         dpd.show()
     }
 
-    private fun selectFavColor(v:View){
+    private fun selectFavColor() {
 
         val colorPickerPopUp = ColorPickerPopUp(context) // Pass the context.
 
         colorPickerPopUp.setShowAlpha(true) // By default show alpha is true.
             .setDefaultColor(Color.RED) // By default red color is set.
-            .setDialogTitle("Pick a Color")
+            .setDialogTitle(getString(R.string.choose_favortie_color))
             .setOnPickColorListener(object : OnPickColorListener {
                 override fun onColorPicked(color: Int) {
                     // handle the use of color
-                    binding.favColorEt.setTextColor(color)
                     hexFavColor = java.lang.String.format("#%06X", 0xFFFFFF and color)
+                    binding.favColorEt.setBackgroundColor(Color.parseColor(hexFavColor))
+                    binding.favColorCard.setBackgroundColor(Color.parseColor(hexFavColor))
+
                 }
 
                 override fun onCancel() {
