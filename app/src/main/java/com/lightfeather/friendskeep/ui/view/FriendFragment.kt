@@ -103,9 +103,9 @@ class FriendFragment : Fragment() {
             ).show()
         } else if (binding.nameEt.text.isEmpty()) {
             binding.nameEt.error = "Please enter friend name"
-        } else if (binding.birthDateEt.text.isEmpty()) {
+        }else if(binding.birthDateEt.text.isEmpty()){
             binding.birthDateEt.error = "Please select the friend birth date"
-        } else {
+        } else{
             saveData()
         }
     }
@@ -257,7 +257,7 @@ class FriendFragment : Fragment() {
         dpd.show()
     }
 
-    private fun selectFavColor() {
+    private fun selectFavColor(){
 
         val colorPickerPopUp = ColorPickerPopUp(context) // Pass the context.
 
@@ -267,6 +267,7 @@ class FriendFragment : Fragment() {
             .setOnPickColorListener(object : OnPickColorListener {
                 override fun onColorPicked(color: Int) {
                     // handle the use of color
+                    binding.favColorEt.setTextColor(color)
                     hexFavColor = java.lang.String.format("#%06X", 0xFFFFFF and color)
                     binding.favColorEt.setBackgroundColor(Color.parseColor(hexFavColor))
                     binding.favColorCard.setBackgroundColor(Color.parseColor(hexFavColor))
