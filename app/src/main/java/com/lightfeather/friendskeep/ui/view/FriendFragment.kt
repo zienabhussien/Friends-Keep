@@ -33,7 +33,7 @@ import java.util.*
 
 
 class FriendFragment : Fragment() {
-    private val TAG = "FriendFragment"
+    private  val TAG = "FriendFragment"
     private lateinit var binding: FragmentFriendsBinding
     private lateinit var args: FriendFragmentArgs
     private val attributesMap = mutableMapOf<String, String>()
@@ -62,7 +62,7 @@ class FriendFragment : Fragment() {
 
         binding.actionBtn.setOnClickListener {
             when (accessState) {
-                ADD -> validateThenSaveData()
+                ADD ->    validateThenSaveData()
                 UPDATE -> {}
                 DISPLAY -> {}
             }
@@ -238,7 +238,7 @@ class FriendFragment : Fragment() {
         }
     }
 
-    private fun selectDate() {
+    private fun selectDate(){
         //  val
         val calender = Calendar.getInstance()
         val year = calender.get(Calendar.YEAR)
