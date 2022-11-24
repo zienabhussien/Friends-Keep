@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Friends Keep</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="want_to_delete_your_friend"> Do you really want to delete your friend</string>
     <string name="friend_name">Friend Name</string>
@@ -13,5 +12,10 @@
     <string name="friend_removed">Friend removed</string>
     <string name="choose_favortie_color">Choose favorite color</string>
     <string name="undo">Undo</string>
-    <string name="add_more">add more ...</string>
+    <string name="add_more">add more …</string>
+    <!--    RELEASE-->
+    <!--    <string name="upperPageBanner">ca-app-pub-5792349830504043/5833566638</string>-->
+
+    <!--    DEBUG-->
+    <string name="upperPageBanner">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

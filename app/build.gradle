@@ -43,7 +43,7 @@ dependencies {
     def room_version = "2.4.3"
     def lottieVersion = "3.4.0"
 
-    
+
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.google.android.gms:play-services-cast-framework:21.2.0'
 
@@ -96,8 +96,9 @@ dependencies {
     //GSON
     implementation 'com.google.code.gson:gson:2.9.1'
     // colorPicker
-    implementation 'com.github.duanhong169:colorpicker:1.1.6'
     implementation 'com.github.mrudultora:Colorpicker:1.2.0'
 
+    //ADS
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
 
 }
