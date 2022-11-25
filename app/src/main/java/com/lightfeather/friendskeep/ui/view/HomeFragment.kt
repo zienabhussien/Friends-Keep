@@ -8,9 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.FragmentHomeBinding
 import com.lightfeather.friendskeep.domain.FriendModel
+import com.lightfeather.friendskeep.domain.application.ReminderWorker
 import com.lightfeather.friendskeep.ui.adapter.ViewPagerAdapter
 import com.lightfeather.friendskeep.ui.showAlertDialog
 import com.lightfeather.friendskeep.ui.showLongSnackbar
@@ -19,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.util.concurrent.TimeUnit
 
 
 class HomeFragment : Fragment() {
@@ -97,4 +103,6 @@ class HomeFragment : Fragment() {
             )
         )
     }
+
+
 }

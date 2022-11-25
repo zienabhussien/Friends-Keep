@@ -12,9 +12,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
+import com.lightfeather.friendskeep.domain.application.ReminderWorker
 import com.lightfeather.friendskeep.domain.application.getCapturedImage
 import com.lightfeather.friendskeep.domain.application.toBase64String
 import com.lightfeather.friendskeep.domain.application.toBitmap
@@ -28,7 +32,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.threeten.bp.LocalDate
 import java.io.IOException
+import org.threeten.bp.Period
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
 
@@ -41,6 +50,9 @@ class FriendFragment : Fragment() {
     private val accessState: FriendFragmentAccessConstants by lazy { args.accessType }
     private val currFriend: FriendModel? by lazy { args.currFriend }
     private var stringImage: String = ""
+    private var chosenYear = 0
+    private var chosenMonth = 0
+    private var chosenDay = 0
     private var hexFavColor: String? by Delegates.observable(null) { property, oldValue, newValue ->
         newValue?.let {
             binding.animatedBackground1.changeLayersColor(newValue)
@@ -94,6 +106,15 @@ class FriendFragment : Fragment() {
             friendViewModel.insertNewFriend(getCurrentFriendData())
             withContext(Dispatchers.Main) { findNavController().navigateUp() }
         }
+        val friendName = binding.nameEt.text.toString()
+        val friendBirthDate = binding.birthDateEt.text.toString()
+        var datesplit = friendBirthDate.split("/")
+        val day =   datesplit[0].trim().toInt()
+        val month = datesplit[1].trim().toInt()
+        val year = datesplit[2].trim().toInt()
+        //val formatter = DateTimeFormatter.ofPattern("dd /mm /yyyy")
+        val initialDelay = LocalDate.of(year,month,day).millisUntilNextBirthDay()
+        createWorkRequest(friendName,initialDelay)
     }
 
     private fun updateFriend() {
@@ -179,6 +200,9 @@ class FriendFragment : Fragment() {
                 showDatePicker { year, month, day ->
                     val date = "$day /${month + 1} /$year"
                     binding.birthDateEt.setText(date)
+                    chosenYear = year
+                    chosenMonth = month
+                    chosenDay = day
                 }
             }
             favColorCard.setOnClickListener {
@@ -194,5 +218,32 @@ class FriendFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         setUpUIWithMode(binding, accessState)
+    }
+
+    fun LocalDate.periodUntilNextBirthDay(): Period? {
+        val today = LocalDate.now()
+        var nextBDay = withYear(today.year)
+         if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
+             nextBDay = nextBDay.plusYears(1)
+             }
+         return Period.between(today,nextBDay)
+    }
+
+    fun LocalDate.millisUntilNextBirthDay(): Long {
+         val today = LocalDate.now()
+         var nextBDay = withYear(today.year)
+         if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
+             nextBDay = nextBDay.plusYears(1)
+        }
+         return ChronoUnit.MILLIS.between(today, nextBDay)
+    }
+
+    private fun createWorkRequest(friendName: String, timeDelayInSeconds: Long){
+        val myWorkRequest = PeriodicWorkRequestBuilder<ReminderWorker>(365,TimeUnit.DAYS)
+            .setInitialDelay(timeDelayInSeconds, TimeUnit.SECONDS)
+            .setInputData(
+                workDataOf("message" to "Its $friendName birthday !") )
+            .build()
+        WorkManager.getInstance(requireContext()).enqueue(myWorkRequest)
     }
 }

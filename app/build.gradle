@@ -42,6 +42,7 @@ dependencies {
     def nav_version = "2.5.3"
     def room_version = "2.4.3"
     def lottieVersion = "3.4.0"
+    def work_version = "2.7.1"
 
     
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
@@ -72,6 +73,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
     // ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
+   // workManager
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // LiveData
     implementation 'androidx.lifecycle:lifecycle-livedata:2.5.1'
@@ -100,4 +103,5 @@ dependencies {
     implementation 'com.github.mrudultora:Colorpicker:1.2.0'
 
 
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 }

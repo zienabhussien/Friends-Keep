@@ -50,6 +50,7 @@ fun FriendFragment.showDatePicker(onDatePicked: (year: Int, month: Int, day: Int
         { _, newYear, monthOfYear, dayOfMonth -> onDatePicked(newYear, monthOfYear, dayOfMonth) },
         year, month, day
     ).show()
+
 }
 
 fun FriendFragment.showColorPicker(title: String, onColorPicked: (Int) -> Unit) {
