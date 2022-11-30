@@ -32,10 +32,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
 import java.io.IOException
 import org.threeten.bp.Period
-import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
@@ -108,13 +108,13 @@ class FriendFragment : Fragment() {
         }
         val friendName = binding.nameEt.text.toString()
         val friendBirthDate = binding.birthDateEt.text.toString()
-        var datesplit = friendBirthDate.split("/")
-        val day =   datesplit[0].trim().toInt()
+        val datesplit = friendBirthDate.split("/")
+        val day = datesplit[0].trim().toInt()
         val month = datesplit[1].trim().toInt()
         val year = datesplit[2].trim().toInt()
         //val formatter = DateTimeFormatter.ofPattern("dd /mm /yyyy")
-        val initialDelay = LocalDate.of(year,month,day).millisUntilNextBirthDay()
-        createWorkRequest(friendName,initialDelay)
+        val initialDelay = LocalDate.of(year, month, day).millisUntilNextBirthDay()
+        createWorkRequest(friendName, initialDelay)
     }
 
     private fun updateFriend() {
@@ -223,26 +223,27 @@ class FriendFragment : Fragment() {
     fun LocalDate.periodUntilNextBirthDay(): Period? {
         val today = LocalDate.now()
         var nextBDay = withYear(today.year)
-         if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
-             nextBDay = nextBDay.plusYears(1)
-             }
-         return Period.between(today,nextBDay)
+        if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
+            nextBDay = nextBDay.plusYears(1)
+        }
+        return Period.between(today, nextBDay)
     }
 
     fun LocalDate.millisUntilNextBirthDay(): Long {
-         val today = LocalDate.now()
-         var nextBDay = withYear(today.year)
-         if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
-             nextBDay = nextBDay.plusYears(1)
+        val today = LocalDate.now()
+        var nextBDay = withYear(today.year)
+        if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
+            nextBDay = nextBDay.plusYears(1)
         }
-         return ChronoUnit.MILLIS.between(today, nextBDay)
+        return Duration.between(today.atStartOfDay(), nextBDay.atStartOfDay()).toMillis()
     }
 
-    private fun createWorkRequest(friendName: String, timeDelayInSeconds: Long){
-        val myWorkRequest = PeriodicWorkRequestBuilder<ReminderWorker>(365,TimeUnit.DAYS)
-            .setInitialDelay(timeDelayInSeconds, TimeUnit.SECONDS)
+    private fun createWorkRequest(friendName: String, timeDelayInMilliSeconds: Long) {
+        val myWorkRequest = PeriodicWorkRequestBuilder<ReminderWorker>(365, TimeUnit.DAYS)
+            .setInitialDelay(timeDelayInMilliSeconds, TimeUnit.MILLISECONDS)
             .setInputData(
-                workDataOf("message" to "Its $friendName birthday !") )
+                workDataOf("message" to "Its $friendName birthday !")
+            )
             .build()
         WorkManager.getInstance(requireContext()).enqueue(myWorkRequest)
     }
