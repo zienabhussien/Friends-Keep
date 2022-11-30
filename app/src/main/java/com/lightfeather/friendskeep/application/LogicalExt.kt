@@ -1,4 +1,4 @@
-package com.lightfeather.friendskeep.domain.application
+package com.lightfeather.friendskeep.application
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Base64
+import org.threeten.bp.Duration
+import org.threeten.bp.LocalDate
 import java.io.ByteArrayOutputStream
 
 fun String.toBitmap(): Bitmap? {
@@ -35,3 +37,14 @@ fun Bitmap.toBase64String(): String {
     val bytes = stream.toByteArray()
     return Base64.encodeToString(bytes, Base64.DEFAULT)
 }
+
+fun LocalDate.millisUntilNextBirthDay(): Long {
+    val today = LocalDate.now()
+    var nextBDay = withYear(today.year)
+    if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
+        nextBDay = nextBDay.plusYears(1)
+    }
+    return Duration.between(today.atStartOfDay(), nextBDay.atStartOfDay()).toMillis()
+}
+
+fun Int.toHexString() = String.format("#%06X", 0xFFFFFF and this)

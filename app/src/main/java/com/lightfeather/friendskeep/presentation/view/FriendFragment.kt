@@ -1,11 +1,10 @@
-package com.lightfeather.friendskeep.ui.view
+package com.lightfeather.friendskeep.presentation.view
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,36 +12,25 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
 import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
-import com.lightfeather.friendskeep.domain.application.ReminderWorker
-import com.lightfeather.friendskeep.domain.application.getCapturedImage
-import com.lightfeather.friendskeep.domain.application.toBase64String
-import com.lightfeather.friendskeep.domain.application.toBitmap
-import com.lightfeather.friendskeep.ui.adapter.RecyclerAdapter
-import com.lightfeather.friendskeep.ui.changeLayersColor
-import com.lightfeather.friendskeep.ui.view.FriendFragmentAccessConstants.ADD
-import com.lightfeather.friendskeep.ui.view.FriendFragmentAccessConstants.UPDATE
-import com.lightfeather.friendskeep.ui.viewmodel.FriendViewModel
+import com.lightfeather.friendskeep.application.getCapturedImage
+import com.lightfeather.friendskeep.application.toBase64String
+import com.lightfeather.friendskeep.application.toBitmap
+import com.lightfeather.friendskeep.application.toHexString
+import com.lightfeather.friendskeep.presentation.adapter.RecyclerAdapter
+import com.lightfeather.friendskeep.presentation.util.changeLayersColor
+import com.lightfeather.friendskeep.presentation.view.FriendFragmentAccessConstants.ADD
+import com.lightfeather.friendskeep.presentation.view.FriendFragmentAccessConstants.UPDATE
+import com.lightfeather.friendskeep.presentation.viewmodel.FriendViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.threeten.bp.Duration
-import org.threeten.bp.LocalDate
 import java.io.IOException
-import org.threeten.bp.Period
-import org.threeten.bp.temporal.ChronoUnit
-import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
 
@@ -58,7 +46,7 @@ class FriendFragment : Fragment() {
     private var chosenYear = 0
     private var chosenMonth = 0
     private var chosenDay = 0
-    private var hexFavColor: String? by Delegates.observable(null) { property, oldValue, newValue ->
+    private var hexFavColor: String? by Delegates.observable(null) { _, _, newValue ->
         newValue?.let {
             binding.animatedBackground1.changeLayersColor(newValue)
             binding.animatedBackground2.changeLayersColor(newValue)
@@ -110,18 +98,14 @@ class FriendFragment : Fragment() {
 
     private fun insertNewFriend() {
         CoroutineScope(Dispatchers.IO).launch {
-            friendViewModel.insertNewFriend(getCurrentFriendData())
+            launch {
+                friendViewModel.insertNewFriend(getCurrentFriendData())
+            }
+            launch {
+                friendViewModel.registerFriendBirthdayNotification(getCurrentFriendData())
+            }
             withContext(Dispatchers.Main) { findNavController().navigateUp() }
         }
-        val friendName = binding.nameEt.text.toString()
-        val friendBirthDate = binding.birthDateEt.text.toString()
-        val datesplit = friendBirthDate.split("/")
-        val day = datesplit[0].trim().toInt()
-        val month = datesplit[1].trim().toInt()
-        val year = datesplit[2].trim().toInt()
-        //val formatter = DateTimeFormatter.ofPattern("dd /mm /yyyy")
-        val initialDelay = LocalDate.of(year, month, day).millisUntilNextBirthDay()
-        createWorkRequest(friendName, initialDelay)
     }
 
     private fun updateFriend() {
@@ -151,11 +135,15 @@ class FriendFragment : Fragment() {
 
     private fun validateThen(onValid: () -> Unit) {
         if (stringImage.isEmpty()) {
-            Toast.makeText(requireContext(), "Please select an image!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.please_select_img),
+                Toast.LENGTH_SHORT
+            ).show()
         } else if (binding.nameEt.text.isEmpty()) {
-            binding.nameEt.error = "Please enter friend name"
+            binding.nameEt.error = getString(R.string.enter_friend_name)
         } else if (binding.birthDateEt.text.isEmpty()) {
-            binding.birthDateEt.error = "Please select the friend birth date"
+            binding.birthDateEt.error = getString(R.string.select_bd)
         } else {
             onValid()
         }
@@ -165,12 +153,16 @@ class FriendFragment : Fragment() {
     private fun setUpUIWithMode(
         binding: FragmentFriendsBinding, accessState: FriendFragmentAccessConstants
     ) {
-        enableEditTexts()
+        binding.nameEt.isEnabled = true
+        setupFab()
+        setupClickListeners()
         setupAttrsList()
-        when (accessState) {
-            ADD -> setUpUIForAdding(binding)
-            UPDATE -> setUpUIForUpdating(binding)
-        }
+        if (accessState == UPDATE) setUpUIForUpdating(binding)
+    }
+
+    private fun setupFab() {
+        binding.addAttrBtn.visibility = View.VISIBLE
+        binding.actionBtn.setImageResource(R.drawable.ic_baseline_save_24)
     }
 
     private fun setupAttrsList() {
@@ -181,8 +173,6 @@ class FriendFragment : Fragment() {
 
     private fun setUpUIForUpdating(binding: FragmentFriendsBinding) {
         with(binding) {
-            addAttrBtn.visibility = View.VISIBLE
-            actionBtn.setImageResource(R.drawable.ic_baseline_save_24)
             currFriend?.let {
                 stringImage = it.friendImg
                 nameEt.setText(it.friendName)
@@ -193,16 +183,8 @@ class FriendFragment : Fragment() {
         }
     }
 
-    private fun setUpUIForAdding(binding: FragmentFriendsBinding) {
+    private fun setupClickListeners() {
         with(binding) {
-            addAttrBtn.visibility = View.VISIBLE
-            actionBtn.setImageResource(R.drawable.ic_baseline_save_24)
-        }
-    }
-
-    private fun enableEditTexts() {
-        with(binding) {
-            nameEt.isEnabled = true
             birthdateCard.setOnClickListener {
                 showDatePicker { year, month, day ->
                     val date = "$day /${month + 1} /$year"
@@ -216,7 +198,7 @@ class FriendFragment : Fragment() {
                 showColorPicker(getString(R.string.choose_favortie_color)) { color: Int ->
                     binding.favColorEt.setTextColor(color)
                     binding.favColorEt.setHintTextColor(color)
-                    hexFavColor = String.format("#%06X", 0xFFFFFF and color)
+                    hexFavColor = color.toHexString()
                 }
             }
         }
@@ -225,33 +207,5 @@ class FriendFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         setUpUIWithMode(binding, accessState)
-    }
-
-    fun LocalDate.periodUntilNextBirthDay(): Period? {
-        val today = LocalDate.now()
-        var nextBDay = withYear(today.year)
-        if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
-            nextBDay = nextBDay.plusYears(1)
-        }
-        return Period.between(today, nextBDay)
-    }
-
-    fun LocalDate.millisUntilNextBirthDay(): Long {
-        val today = LocalDate.now()
-        var nextBDay = withYear(today.year)
-        if (nextBDay.isBefore(today) || nextBDay.isEqual(today)) {
-            nextBDay = nextBDay.plusYears(1)
-        }
-        return Duration.between(today.atStartOfDay(), nextBDay.atStartOfDay()).toMillis()
-    }
-
-    private fun createWorkRequest(friendName: String, timeDelayInMilliSeconds: Long) {
-        val myWorkRequest = PeriodicWorkRequestBuilder<ReminderWorker>(365, TimeUnit.DAYS)
-            .setInitialDelay(timeDelayInMilliSeconds, TimeUnit.MILLISECONDS)
-            .setInputData(
-                workDataOf("message" to "Its $friendName birthday !")
-            )
-            .build()
-        WorkManager.getInstance(requireContext()).enqueue(myWorkRequest)
     }
 }

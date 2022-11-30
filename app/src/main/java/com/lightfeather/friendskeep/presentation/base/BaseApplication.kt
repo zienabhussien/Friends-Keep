@@ -1,10 +1,10 @@
-package com.lightfeather.friendskeep
+package com.lightfeather.friendskeep.presentation.base
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.lightfeather.friendskeep.presentation.friendDatabaseModule
-import com.lightfeather.friendskeep.presentation.friendRepositoryModule
-import com.lightfeather.friendskeep.presentation.viewModelModule
+import com.lightfeather.friendskeep.application.friendDatabaseModule
+import com.lightfeather.friendskeep.application.friendRepositoryModule
+import com.lightfeather.friendskeep.application.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

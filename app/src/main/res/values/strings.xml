@@ -18,4 +18,7 @@
 
     <!--    DEBUG-->
     <string name="upperPageBanner">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="please_select_img">Please add an image!</string>
+    <string name="enter_friend_name">Please enter friend name</string>
+    <string name="select_bd">Please select the friend birth date</string>
 </resources>

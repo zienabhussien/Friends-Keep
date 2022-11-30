@@ -1,8 +1,7 @@
-package com.lightfeather.friendskeep
+package com.lightfeather.friendskeep.presentation.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.lightfeather.friendskeep.databinding.ActivityMainBinding
 

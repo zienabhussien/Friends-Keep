@@ -1,11 +1,8 @@
-package com.lightfeather.friendskeep.ui.adapter
+package com.lightfeather.friendskeep.presentation.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
-import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.CardItemBinding
 
 class RecyclerAdapter(private val attributeList: Map<String, String>) :

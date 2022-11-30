@@ -1,11 +1,8 @@
-package com.lightfeather.friendskeep.presentation
+package com.lightfeather.friendskeep.application
 
 import com.lightfeather.friendskeep.domain.FriendModel
 import com.lightfeather.friendskeep.domain.db.FriendDatabase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 
 class FriendRepository(private val friendDatabase: FriendDatabase) {
 
@@ -21,6 +18,4 @@ class FriendRepository(private val friendDatabase: FriendDatabase) {
 
     fun updateFriend(currentFriendData: FriendModel) =
         friendDatabase.getFriendDao().updateFriend(currentFriendData)
-
-
 }

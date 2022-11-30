@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.lightfeather.friendskeep.ui.view.HomeFragment"
+        android:name="com.lightfeather.friendskeep.presentation.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -17,12 +17,12 @@
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
-        android:name="com.lightfeather.friendskeep.ui.view.FriendFragment"
+        android:name="com.lightfeather.friendskeep.presentation.view.FriendFragment"
         android:label="fragment_friends"
         tools:layout="@layout/fragment_friends">
         <argument
             android:name="access_type"
-            app:argType=".ui.view.FriendFragmentAccessConstants"
+            app:argType="com.lightfeather.friendskeep.presentation.view.FriendFragmentAccessConstants"
              />
         <argument
             android:name="curr_friend"

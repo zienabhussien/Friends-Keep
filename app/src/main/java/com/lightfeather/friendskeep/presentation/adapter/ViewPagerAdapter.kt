@@ -1,4 +1,4 @@
-package com.lightfeather.friendskeep.ui.adapter
+package com.lightfeather.friendskeep.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
-import com.lightfeather.friendskeep.domain.application.toBitmap
-import com.lightfeather.friendskeep.ui.changeLayersColor
+import com.lightfeather.friendskeep.application.toBitmap
+import com.lightfeather.friendskeep.presentation.util.changeLayersColor
 
 class ViewPagerAdapter(
     private val friendList: List<FriendModel>,

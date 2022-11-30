@@ -1,4 +1,4 @@
-package com.lightfeather.friendskeep.ui.view
+package com.lightfeather.friendskeep.presentation.view
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog

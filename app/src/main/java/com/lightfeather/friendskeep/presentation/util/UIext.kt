@@ -1,4 +1,4 @@
-package com.lightfeather.friendskeep.ui
+package com.lightfeather.friendskeep.presentation.util
 
 import android.app.Activity
 import android.content.Context
@@ -8,9 +8,6 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.SimpleColorFilter
@@ -18,9 +15,6 @@ import com.airbnb.lottie.model.KeyPath
 import com.airbnb.lottie.value.LottieValueCallback
 import com.google.android.material.snackbar.Snackbar
 import com.lightfeather.friendskeep.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 private const val TAG = "ext"
