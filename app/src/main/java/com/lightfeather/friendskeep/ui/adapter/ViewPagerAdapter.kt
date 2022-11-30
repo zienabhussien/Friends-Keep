@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
 import com.lightfeather.friendskeep.databinding.FragmentFriendsBinding
 import com.lightfeather.friendskeep.domain.FriendModel
 import com.lightfeather.friendskeep.domain.application.toBitmap
@@ -38,6 +39,8 @@ class ViewPagerAdapter(
 
         fun bind(friendModel: FriendModel) {
             with(binding) {
+                val adRequest = AdRequest.Builder().build()
+                adView.loadAd(adRequest)
                 nameEt.setText(friendModel.friendName)
                 birthDateEt.setText(friendModel.birthDate)
                 if (friendModel.friendImg.isNotEmpty()) {
