@@ -13,7 +13,8 @@
         android:layout_height="match_parent"
         android:rotation="180"
         android:scaleType="centerCrop"
-        app:lottie_rawRes="@raw/waves" />
+        app:lottie_rawRes="@raw/waves"
+       />
 
     <com.airbnb.lottie.LottieAnimationView
 
@@ -21,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:lottie_rawRes="@raw/waves" />
+        app:lottie_rawRes="@raw/waves"
+       />
 
 
     <androidx.core.widget.NestedScrollView
@@ -94,31 +96,21 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/img_frame"
-                android:layout_width="@dimen/_180sdp"
-                android:layout_height="@dimen/_180sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_60sdp"
-                android:src="@drawable/frame" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/friend_image"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="@dimen/_150sdp"
-                android:layout_alignStart="@id/img_frame"
-                android:layout_alignTop="@id/img_frame"
-                android:layout_alignEnd="@id/img_frame"
-                android:layout_alignBottom="@id/img_frame"
-                android:layout_marginTop="@dimen/_minus1sdp"
+                android:layout_width="262dp"
+                android:layout_height="263dp"
+                android:layout_below="@id/adViewContainer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_1sdp"
                 android:padding="@dimen/_42sdp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_person_24"
-                app:layout_column="0"
-                app:layout_row="0" />
-
+                ads:civ_border_color="#FFF"
+                ads:civ_border_width="@dimen/_2sdp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/nameCard"
@@ -127,6 +119,8 @@
                 android:layout_below="@id/friend_image"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
+                android:layout_marginRight="@dimen/_38sdp"
+                android:layout_marginLeft="@dimen/_38sdp"
                 app:cardUseCompatPadding="true"
                 app:layout_column="0"
                 app:layout_columnWeight="1"
@@ -159,6 +153,8 @@
                 android:layout_below="@id/nameCard"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
+                android:layout_marginRight="@dimen/_38sdp"
+                android:layout_marginLeft="@dimen/_38sdp"
                 app:cardUseCompatPadding="true"
                 app:layout_column="1"
                 app:layout_columnWeight="1"
@@ -181,6 +177,8 @@
                     android:hint="@string/birth_date"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
+
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -190,6 +188,8 @@
                 android:layout_below="@id/birthdateCard"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
+                android:layout_marginRight="@dimen/_38sdp"
+                android:layout_marginLeft="@dimen/_38sdp"
                 app:cardUseCompatPadding="true"
                 app:layout_column="0"
                 app:layout_columnWeight="1"
@@ -249,6 +249,8 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_12sdp"
                 android:src="@drawable/camera_icon" />
+
+
 
 
         </RelativeLayout>

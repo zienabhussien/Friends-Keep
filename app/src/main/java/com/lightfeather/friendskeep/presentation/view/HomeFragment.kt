@@ -5,9 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import androidx.viewpager2.widget.ViewPager2
 import com.lightfeather.friendskeep.R
 import com.lightfeather.friendskeep.databinding.FragmentHomeBinding
 import com.lightfeather.friendskeep.domain.FriendModel
@@ -22,6 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class HomeFragment : Fragment() {
+
     private val TAG = "HomeFragment"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewPagerAdapter: ViewPagerAdapter
@@ -42,9 +47,34 @@ class HomeFragment : Fragment() {
                         )
                 )
             }
+          viewPager.registerOnPageChangeCallback(
+              object : ViewPager2.OnPageChangeCallback(){
+                  override fun onPageSelected(position: Int) {
+                      var numberOfPages = (viewPagerAdapter.itemCount -1)
+                      checkCurrentPagePosition(position,numberOfPages)
+
+                  }
+              }
+          )
         }
         observeFriendsList()
         return binding.root
+    }
+
+    private fun checkCurrentPagePosition(position: Int,numberOfPages: Int) {
+        if(position == 0)
+        {
+            binding.backArrow.visibility = View.GONE
+            binding.forwardArrow.visibility = View.VISIBLE
+        }
+        else if (position == numberOfPages)
+        {  // at last item back arrow only must appear
+            binding.backArrow.visibility = View.VISIBLE
+            binding.forwardArrow.visibility = View.GONE
+        }else{
+            binding.forwardArrow.visibility = View.VISIBLE
+            binding.backArrow.visibility = View.VISIBLE
+        }
     }
 
 
@@ -57,9 +87,11 @@ class HomeFragment : Fragment() {
                     it,
                     onDeleteClick = ::showDeleteDialog, onUpdateClicked = ::navigateUpdateFriend
                 )
+
                 binding.viewPager.adapter = viewPagerAdapter
 
             }
+
         }
     }
 
