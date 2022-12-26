@@ -42,15 +42,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/backArrow"
-        android:layout_width="@dimen/_58sdp"
-        android:layout_height="@dimen/_58sdp"
-        android:layout_marginBottom="324dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_double_arrow_left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -61,14 +52,29 @@
         tools:layout_editor_absoluteY="266dp" />
 
     <ImageView
-        android:id="@+id/forwardArrow"
-        android:layout_width="@dimen/_58sdp"
-        android:layout_height="@dimen/_58sdp"
-        android:layout_marginBottom="324dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_double_arrow"
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_2sdp"
+        android:scaleX="-1"
+        android:src="@drawable/turn_right_arrow_svgrepo_com"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/forwardArrow"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_2sdp"
+        android:src="@drawable/turn_right_arrow_svgrepo_com"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addFriendBtn"

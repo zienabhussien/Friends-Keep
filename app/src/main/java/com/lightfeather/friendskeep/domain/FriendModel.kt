@@ -9,7 +9,7 @@ data class FriendModel(
     val favColor: String,
     val birthDate: String,
     val friendImg: String,
-    val otherAttributes: Map<String, String>,
+    val otherAttributes: List<Triple<String, String, Int>>,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 

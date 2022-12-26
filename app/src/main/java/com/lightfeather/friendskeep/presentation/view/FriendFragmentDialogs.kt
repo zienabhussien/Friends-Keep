@@ -4,40 +4,52 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.view.LayoutInflater
 import android.widget.Toast
-import com.lightfeather.friendskeep.databinding.AddAttributeDialogBinding
+import com.lightfeather.friendskeep.application.favoriteCategories
+import com.lightfeather.friendskeep.databinding.DialogAddAttributeBinding
+import com.lightfeather.friendskeep.presentation.adapter.CardItemRecyclerAdapter
 import com.mrudultora.colorpicker.ColorPickerPopUp
 import java.util.*
 
-fun FriendFragment.showAddAttrsDialog(onValidAttempt: (String, String) -> Unit = { _, _ -> }) {
-    val attrBinding = AddAttributeDialogBinding.inflate(LayoutInflater.from(requireContext()))
+fun FriendFragment.showAddAttrsDialog(onValidAttempt: (String, String, Int) -> Unit = { _, _, _ -> }) {
+    val attrBinding = DialogAddAttributeBinding.inflate(LayoutInflater.from(requireContext()))
     val builder = AlertDialog.Builder(requireContext()).setView(attrBinding.root)
 
     val alertDialog = builder.create()
     alertDialog.show()
 
-    attrBinding.backBtn.setOnClickListener {
-        alertDialog.dismiss()
-    }
-    attrBinding.addBtn.setOnClickListener {
-        if (attrBinding.attrEt.text!!.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Please enter name for the attribute", Toast.LENGTH_SHORT
-            ).show()
-        } else if (attrBinding.attrValEt.text!!.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "Please enter the attribute value", Toast.LENGTH_SHORT
-            ).show()
-        } else {
-
-            onValidAttempt(
-                attrBinding.attrEt.text.toString(),
-                attrBinding.attrValEt.text.toString()
+    with(attrBinding) {
+        val listAdapter = CardItemRecyclerAdapter(List(favoriteCategories.size) {
+            Triple(
+                "", "",
+                favoriteCategories[it]
             )
+        }, true)
+        categoriesList.adapter = listAdapter
+        backBtn.setOnClickListener {
             alertDialog.dismiss()
         }
+        addBtn.setOnClickListener {
+            if (attrBinding.attrEt.text!!.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please enter name for the attribute", Toast.LENGTH_SHORT
+                ).show()
+            } else if (attrBinding.attrValEt.text!!.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please enter the attribute value", Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                onValidAttempt(
+                    attrBinding.attrEt.text.toString(),
+                    attrBinding.attrValEt.text.toString(),
+                    favoriteCategories[listAdapter.selectedIdx]
+                )
+                alertDialog.dismiss()
+            }
+        }
     }
+
 }
 
 fun FriendFragment.showDatePicker(onDatePicked: (year: Int, month: Int, day: Int) -> Unit) {

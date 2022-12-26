@@ -47,31 +47,31 @@ class HomeFragment : Fragment() {
                         )
                 )
             }
-          viewPager.registerOnPageChangeCallback(
-              object : ViewPager2.OnPageChangeCallback(){
-                  override fun onPageSelected(position: Int) {
-                      var numberOfPages = (viewPagerAdapter.itemCount -1)
-                      checkCurrentPagePosition(position,numberOfPages)
-
-                  }
-              }
-          )
+            viewPager.registerOnPageChangeCallback(
+                object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        val numberOfPages = viewPagerAdapter.itemCount
+                        checkCurrentPagePosition(position, numberOfPages)
+                    }
+                }
+            )
         }
         observeFriendsList()
         return binding.root
     }
 
-    private fun checkCurrentPagePosition(position: Int,numberOfPages: Int) {
-        if(position == 0)
-        {
+    private fun checkCurrentPagePosition(position: Int, numberOfPages: Int) {
+        Log.d(TAG, "checkCurrentPagePosition: $numberOfPages")
+        if (numberOfPages < 2) {
+            binding.backArrow.visibility = View.GONE
+            binding.forwardArrow.visibility = View.GONE
+        } else if (position == 0) {
             binding.backArrow.visibility = View.GONE
             binding.forwardArrow.visibility = View.VISIBLE
-        }
-        else if (position == numberOfPages)
-        {  // at last item back arrow only must appear
+        } else if (position == numberOfPages - 1) {  // at last item back arrow only must appear
             binding.backArrow.visibility = View.VISIBLE
             binding.forwardArrow.visibility = View.GONE
-        }else{
+        } else {
             binding.forwardArrow.visibility = View.VISIBLE
             binding.backArrow.visibility = View.VISIBLE
         }

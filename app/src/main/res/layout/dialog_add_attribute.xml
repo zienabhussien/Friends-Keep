@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_back"
@@ -9,11 +10,13 @@
 
     <ImageButton
         android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
         android:background="@android:color/transparent"
         android:padding="5dp"
-        android:src="@drawable/ic_arrow_back" />
+        android:scaleType="centerCrop"
+        android:scaleX="-1"
+        android:src="@drawable/turn_right_arrow_svgrepo_com" />
 
     <TextView
         android:id="@+id/title"
@@ -21,7 +24,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:padding="5dp"
-        android:text="Add new Attribute"
+        android:text="@string/add_new_favorite"
         android:textAlignment="center"
         android:textColor="@color/purple_200"
         android:textSize="20sp"
@@ -29,44 +32,67 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/attrTitleIL"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/backBtn"
         android:layout_marginTop="20dp"
         android:hint="attribute title"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxStrokeColor="@color/purple_200">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/attrEt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/attrValIL"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/attrTitleIL"
         android:layout_marginTop="20dp"
         android:hint="attribute value"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxStrokeColor="@color/purple_200">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/attrValEt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_marginTop="@dimen/_8sdp"
+        android:id="@+id/category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/attrValIL"
+        android:fontFamily="sans-serif-condensed"
+        android:padding="5dp"
+        android:text="@string/favorite_category"
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textSize="@dimen/_16sdp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categories_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/category"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/card_item" />
+
     <Button
         android:id="@+id/addBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="add"
+        android:layout_below="@+id/categories_list"
+        android:layout_marginTop="@dimen/_12sdp"
         android:background="@drawable/btn_shape"
-        app:backgroundTint="@null"
+        android:text="add"
         android:textAllCaps="false"
         android:textSize="@dimen/_16sdp"
-        android:layout_below="@+id/attrValIL"
-        android:layout_marginTop="@dimen/_20sdp"/>
+        app:backgroundTint="@null" />
 </RelativeLayout>

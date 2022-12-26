@@ -14,11 +14,14 @@
     <string name="undo">Undo</string>
     <string name="add_more">add more …</string>
     <!--    RELEASE-->
-    <!--    <string name="upperPageBanner">ca-app-pub-5792349830504043/5833566638</string>-->
+    <string name="upperPageBanner" translatable="false">ca-app-pub-5792349830504043/5833566638</string>
 
     <!--    DEBUG-->
-    <string name="upperPageBanner">ca-app-pub-3940256099942544/6300978111</string>
+    <!--    <string name="upperPageBanner">ca-app-pub-3940256099942544/6300978111</string>-->
+
     <string name="please_select_img">Please add an image!</string>
     <string name="enter_friend_name">Please enter friend name</string>
     <string name="select_bd">Please select the friend birth date</string>
+    <string name="add_new_favorite">Add new Favorite</string>
+    <string name="favorite_category">Favorite Category</string>
 </resources>

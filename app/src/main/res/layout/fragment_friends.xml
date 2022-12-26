@@ -13,17 +13,14 @@
         android:layout_height="match_parent"
         android:rotation="180"
         android:scaleType="centerCrop"
-        app:lottie_rawRes="@raw/waves"
-       />
+        app:lottie_rawRes="@raw/waves" />
 
     <com.airbnb.lottie.LottieAnimationView
-
         android:id="@+id/animated_background2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:lottie_rawRes="@raw/waves"
-       />
+        app:lottie_rawRes="@raw/waves" />
 
 
     <androidx.core.widget.NestedScrollView
@@ -93,34 +90,18 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_baseline_mode_edit_24" />
 
-
             </LinearLayout>
 
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/friend_image"
-                android:layout_width="262dp"
-                android:layout_height="263dp"
-                android:layout_below="@id/adViewContainer"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_2sdp"
-                android:layout_marginBottom="@dimen/_1sdp"
-                android:padding="@dimen/_42sdp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_baseline_person_24"
-                ads:civ_border_color="#FFF"
-                ads:civ_border_width="@dimen/_2sdp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/nameCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/friend_image"
+                android:layout_marginLeft="@dimen/_38sdp"
+                android:layout_marginRight="@dimen/_38sdp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
-                android:layout_marginRight="@dimen/_38sdp"
-                android:layout_marginLeft="@dimen/_38sdp"
                 app:cardUseCompatPadding="true"
                 app:layout_column="0"
                 app:layout_columnWeight="1"
@@ -151,10 +132,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nameCard"
+                android:layout_marginLeft="@dimen/_38sdp"
+                android:layout_marginRight="@dimen/_38sdp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
-                android:layout_marginRight="@dimen/_38sdp"
-                android:layout_marginLeft="@dimen/_38sdp"
                 app:cardUseCompatPadding="true"
                 app:layout_column="1"
                 app:layout_columnWeight="1"
@@ -186,10 +167,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/birthdateCard"
+                android:layout_marginLeft="@dimen/_38sdp"
+                android:layout_marginRight="@dimen/_38sdp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
-                android:layout_marginRight="@dimen/_38sdp"
-                android:layout_marginLeft="@dimen/_38sdp"
                 app:cardUseCompatPadding="true"
                 app:layout_column="0"
                 app:layout_columnWeight="1"
@@ -216,6 +197,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/other_attrs"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/favColorCard"
@@ -237,8 +219,25 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"
-                app:strokeColor="@color/black"
+                app:backgroundTint="#33627D"
+                app:strokeColor="@color/white"
                 app:strokeWidth="2dp" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/friend_image"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_below="@id/friend_management_container"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_1sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_person_24"
+                ads:civ_border_color="#FFF"
+                ads:civ_border_width="@dimen/_2sdp"
+                ads:civ_circle_background_color="#33627D" />
+
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/add_imageView"
@@ -246,11 +245,9 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_alignEnd="@id/friend_image"
                 android:layout_alignBottom="@id/friend_image"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_12sdp"
-                android:src="@drawable/camera_icon" />
-
-
+                android:src="@drawable/camera_icon"
+                ads:civ_border_color="#FFF"
+                ads:civ_border_width="@dimen/_2sdp" />
 
 
         </RelativeLayout>

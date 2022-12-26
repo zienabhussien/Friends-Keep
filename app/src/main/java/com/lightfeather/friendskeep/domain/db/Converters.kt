@@ -6,11 +6,12 @@ import com.google.gson.reflect.TypeToken
 
 class Converters {
     @TypeConverter
-    fun mapToString(input: Map<String, String>): String = Gson().toJson(input)
+    fun mapToString(input: List<Triple<String, String, Int>>): String = Gson().toJson(input)
 
     @TypeConverter
-    fun stringToMap(input: String): Map<String, String> {
-        val mapType = object : TypeToken<Map<String, String>>() {}.type
-        return Gson().fromJson(input, mapType)
+    fun stringToMap(input: String): List<Triple<String, String, Int>> {
+        if (input.isEmpty()) return listOf()
+        val listType = object : TypeToken<List<Triple<String, String, Int>>>(){}.type
+        return Gson().fromJson(input, listType)
     }
 }

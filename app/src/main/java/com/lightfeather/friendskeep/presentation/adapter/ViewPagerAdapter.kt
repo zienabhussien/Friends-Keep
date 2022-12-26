@@ -56,7 +56,7 @@ class ViewPagerAdapter(
                 friendManagementContainer.visibility = View.VISIBLE
                 deleteFriend.setOnClickListener { onDeleteClick(friendModel) }
                 editFriend.setOnClickListener { onUpdateClicked(friendModel) }
-                otherAttrs.adapter = RecyclerAdapter(friendModel.otherAttributes)
+                otherAttrs.adapter = CardItemRecyclerAdapter(friendModel.otherAttributes)
             }
         }
     }

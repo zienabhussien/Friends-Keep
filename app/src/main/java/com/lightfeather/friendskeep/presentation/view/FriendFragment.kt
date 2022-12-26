@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ import com.lightfeather.friendskeep.application.getCapturedImage
 import com.lightfeather.friendskeep.application.toBase64String
 import com.lightfeather.friendskeep.application.toBitmap
 import com.lightfeather.friendskeep.application.toHexString
-import com.lightfeather.friendskeep.presentation.adapter.RecyclerAdapter
+import com.lightfeather.friendskeep.presentation.adapter.CardItemRecyclerAdapter
 import com.lightfeather.friendskeep.presentation.util.changeLayersColor
 import com.lightfeather.friendskeep.presentation.view.FriendFragmentAccessConstants.ADD
 import com.lightfeather.friendskeep.presentation.view.FriendFragmentAccessConstants.UPDATE
@@ -38,7 +39,7 @@ class FriendFragment : Fragment() {
     private val TAG = "FriendFragment"
     private lateinit var binding: FragmentFriendsBinding
     private lateinit var args: FriendFragmentArgs
-    private val attributesMap = mutableMapOf<String, String>()
+    private val attributesList = mutableListOf<Triple<String, String, Int>>()
     private val friendViewModel: FriendViewModel by sharedViewModel()
     private val accessState: FriendFragmentAccessConstants by lazy { args.accessType }
     private val currFriend: FriendModel? by lazy { args.currFriend }
@@ -71,9 +72,10 @@ class FriendFragment : Fragment() {
         with(binding) {
             args = FriendFragmentArgs.fromBundle(requireArguments())
             addAttrBtn.setOnClickListener {
-                showAddAttrsDialog { attrTitle, attrValue ->
-                    attributesMap[attrTitle] = attrValue
-                    otherAttrs.adapter?.notifyDataSetChanged()
+                showAddAttrsDialog { attrTitle, attrValue, img ->
+                    Log.d(TAG, "onCreateView: $attributesList")
+                    attributesList += Triple(attrTitle, attrValue, img)
+                    otherAttrs.adapter = CardItemRecyclerAdapter(attributesList)
                 }
             }
             addImageView.setOnClickListener { selectImage() }
@@ -118,7 +120,7 @@ class FriendFragment : Fragment() {
     private fun getCurrentFriendData(): FriendModel {
         val friendName = binding.nameEt.text.toString()
         val friendBirthDate = binding.birthDateEt.text.toString()
-        return FriendModel(friendName, hexFavColor!!, friendBirthDate, stringImage, attributesMap)
+        return FriendModel(friendName, hexFavColor!!, friendBirthDate, stringImage, attributesList)
     }
 
 
@@ -167,18 +169,20 @@ class FriendFragment : Fragment() {
 
     private fun setupAttrsList() {
         with(binding) {
-            otherAttrs.adapter = RecyclerAdapter(attributesMap)
+            otherAttrs.adapter = CardItemRecyclerAdapter(attributesList)
         }
     }
 
     private fun setUpUIForUpdating(binding: FragmentFriendsBinding) {
         with(binding) {
             currFriend?.let {
+                attributesList += it.otherAttributes
                 stringImage = it.friendImg
                 nameEt.setText(it.friendName)
                 birthDateEt.setText(it.birthDate)
                 friendImage.setImageBitmap(it.friendImg.toBitmap())
                 hexFavColor = it.favColor
+                otherAttrs.adapter = CardItemRecyclerAdapter(it.otherAttributes)
             }
         }
     }

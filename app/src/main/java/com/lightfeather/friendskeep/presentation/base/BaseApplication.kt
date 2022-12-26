@@ -1,6 +1,7 @@
 package com.lightfeather.friendskeep.presentation.base
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.lightfeather.friendskeep.application.friendDatabaseModule
 import com.lightfeather.friendskeep.application.friendRepositoryModule
@@ -12,6 +13,7 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         AndroidThreeTen.init(this);
         startKoin {
             androidContext(this@BaseApplication)
